@@ -72,10 +72,19 @@ const writeFile = universalify.fromPromise(_writeFile)
 
 function writeFileSync (file, obj, options = {}) {
   const fs = options.fs || _fs
-
-  const str = stringify(obj, options)
-  // not sure if fs.writeFileSync returns anything, but just in case
-  return fs.writeFileSync(file, str, options)
+  if (typeof obj === undefined){
+    throw new Error("Se está intentando guardar 'undefined'")
+  }
+  else{
+    const str = stringify(obj, options)
+    // not sure if fs.writeFileSync returns anything, but just in case
+    if (typeof file !== typeof ""){
+      throw new Error("No se a ingresado una ruta valida")
+    }
+    else{
+      return fs.writeFileSync(file, str, options)
+    }
+  }
 }
 
 const jsonfile = {
